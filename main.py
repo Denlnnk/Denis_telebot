@@ -1,20 +1,22 @@
 import random
 import telebot
-import telebot_token
+import konfig
 from telebot import types
+from insta_unfollow import get_unfollowers
 
-bot = telebot.TeleBot(telebot_token.token)
+bot = telebot.TeleBot(konfig.token)
 motivation_for_user = []
 
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 
     get_help = types.KeyboardButton('Help')
     motivation = types.KeyboardButton('Motivation')
+    dont_follow_back = types.KeyboardButton('Don\'t follow back(instagram)')
 
-    markup.add(get_help, motivation)
+    markup.add(get_help, motivation, dont_follow_back)
     bot.send_message(message.chat.id, f'Hello, {message.from_user.first_name}', reply_markup=markup)
 
 
@@ -29,6 +31,7 @@ def get_motivation(message):
     elif message.text == 'Help':
         help_message = '<b>Here you can</b>: \n1) Get motivation'
         bot.send_message(message.chat.id, help_message, parse_mode='html')
+
 
 
 bot.infinity_polling()
