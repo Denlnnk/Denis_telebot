@@ -17,7 +17,7 @@ except:
     L.login(username, password)
 
 
-def get_unfollowers(username_for_check: str = 'denlnnk'):
+def get_unfollowers(username_for_check: str):
     # insta loader profile object
     profile = instaloader.Profile.from_username(L.context, username_for_check)
 
