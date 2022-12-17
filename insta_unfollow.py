@@ -1,28 +1,28 @@
 import instaloader
 import konfig
 
-# Loading instaloader object
-L = instaloader.Instaloader()
 
-# Username
-username = konfig.insta_username
-password = konfig.insta_password
+class InstaLoader:
 
-try:
-    # Loading session stored in the system
-    L.load_session_from_file(username)
+    def __init__(self, username_for_check: str):
+        self.L = instaloader.Instaloader()
 
-except:
-    # Login with username and password
-    L.login(username, password)
+        self.username = konfig.insta_username
+        self.password = konfig.insta_password
 
+        self.username_for_check = username_for_check
 
-def get_unfollowers(username_for_check: str):
-    # insta loader profile object
-    profile = instaloader.Profile.from_username(L.context, username_for_check)
+        try:
+            self.L.load_session_from_file(self.username)
+        except FileNotFoundError:
+            self.L.login(self.username, self.password)
 
-    # Current usernames
-    current_followers = [i.username for i in profile.get_followers()]
-    current_following = [i.username for i in profile.get_followees()]
+    def get_unfollowers(self) -> set[str]:
+        profile = instaloader.Profile.from_username(self.L.context, self.username_for_check)
 
-    return set(current_following).difference(set(current_followers))
+        current_followers = [i.username for i in profile.get_followers()]
+        current_following = [i.username for i in profile.get_followees()]
+        if len(current_followers) == len(current_following):
+            raise ValueError('You dont have unfollowers or your account is private')
+
+        return set(current_following).difference(set(current_followers))
