@@ -1,4 +1,5 @@
 import random
+import time
 import instaloader
 import telebot
 import config
@@ -6,11 +7,11 @@ from telebot import types
 from instagram import Instagram
 
 bot = telebot.TeleBot(config.token)
-motivation_for_user = []
 
 
 @bot.message_handler(commands=['start', 'help'])
 def commands_processing(message):
+
     if message.text == '/start':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 
@@ -19,6 +20,7 @@ def commands_processing(message):
 
         markup.add(motivation, dont_follow_back)
         bot.send_message(message.chat.id, f'Hello, {message.from_user.first_name}', reply_markup=markup)
+
     elif message.text == '/help':
         help_message = '<b>Here you can</b>: ' \
                        '\n1) Get motivation ' \
@@ -28,16 +30,18 @@ def commands_processing(message):
 
 @bot.message_handler(content_types=['text'])
 def buttons_processing(message):
+
     if message.text == config.motivation_button or 'motivation' in message.text.lower():
         with open('static/motivation/motivation_examples', 'r') as file:
             motivation_text = random.choice(file.readlines()).strip()
-            motivation_for_user.insert(0, motivation_text)
             bot.send_message(message.chat.id, f'<b>Here is</b>: \n{motivation_text}', parse_mode='html')
 
     elif message.text == config.unfollowers_button:
-        bot.send_message(message.chat.id, '<b>[Info]</b>Make sure account privacy is OFF', parse_mode='html')
+        bot.send_message(message.chat.id, '<b>[ INFO ]</b>\nMake sure account privacy is OFF', parse_mode='html')
+        time.sleep(1)
         msg = bot.send_message(message.chat.id, 'Write Instagram Username: ')
         bot.register_next_step_handler(msg, get_unfollowers)
+
     else:
         bot.send_message(message.chat.id, 'Ooops... I\'m so stupid for that :(')
 
@@ -50,6 +54,7 @@ def get_unfollowers(message):
         bot.send_message(message.chat.id, f'<b>Amount</b>: {difference_length}'
                                           f'\n<b>They are</b>: '
                                           f'\n{dont_follow_back}', parse_mode='html')
+
     except instaloader.exceptions.ProfileNotExistsException as ex:
         bot.send_message(message.chat.id, f'{ex}')
     except ValueError as ex:

@@ -4,24 +4,29 @@ import config
 
 class Instagram:
 
-    def __init__(self, username_for_check: str):
-        self.L = instaloader.Instaloader()
+    def __init__(self, target: str):
+        self.loader = instaloader.Instaloader()
 
         self.username = config.insta_username
         self.password = config.insta_password
 
-        self.username_for_check = username_for_check
+        self.target = target
 
         try:
-            self.L.load_session_from_file(self.username)
+            self.loader.load_session_from_file(self.username)
         except FileNotFoundError:
-            self.L.login(self.username, self.password)
+            self.loader.login(self.username, self.password)
+        self.profile = instaloader.Profile.from_username(self.loader.context, self.target)
+
+    def get_followers(self):
+        return [i.username for i in self.profile.get_followers()]
+
+    def get_following(self):
+        return [i.username for i in self.profile.get_followees()]
 
     def get_unfollowers(self) -> tuple[int, set]:
-        profile = instaloader.Profile.from_username(self.L.context, self.username_for_check)
-
-        current_followers = [i.username for i in profile.get_followers()]
-        current_following = [i.username for i in profile.get_followees()]
+        current_followers = self.get_followers()
+        current_following = self.get_following()
         if len(current_followers) == len(current_following):
             raise ValueError('You dont have unfollowers or your account is private')
 
@@ -29,3 +34,8 @@ class Instagram:
         difference_length = len(difference)
 
         return difference_length, difference
+
+loader = Instagram('denlnnk')
+print(loader.get_following())
+print(loader.get_followers())
+print(loader.get_unfollowers())
