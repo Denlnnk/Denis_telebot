@@ -1,5 +1,6 @@
 import instaloader
 import config
+import logging
 
 
 class Instagram:
@@ -19,7 +20,8 @@ class Instagram:
         try:
             self.loader.load_session_from_file(self.username)
         except FileNotFoundError:
-            self.loader.login(self.username, self.password, proxies=config.proxies)
+            logging.error('Log in with username and passwrd')
+            self.loader.login(self.username, self.password)
 
     def get_followers(self):
         return [i.username for i in self.profile.get_followers()]
@@ -37,4 +39,3 @@ class Instagram:
         difference_length = len(difference)
 
         return difference_length, difference
-
