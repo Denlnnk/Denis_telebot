@@ -9,14 +9,17 @@ class Instagram:
 
         self.username = config.insta_username
         self.password = config.insta_password
+        self.login()
 
         self.target = target
 
+        self.profile = instaloader.Profile.from_username(self.loader.context, self.target)
+
+    def login(self):
         try:
             self.loader.load_session_from_file(self.username)
         except FileNotFoundError:
             self.loader.login(self.username, self.password)
-        self.profile = instaloader.Profile.from_username(self.loader.context, self.target)
 
     def get_followers(self):
         return [i.username for i in self.profile.get_followers()]
@@ -35,7 +38,3 @@ class Instagram:
 
         return difference_length, difference
 
-loader = Instagram('denlnnk')
-print(loader.get_following())
-print(loader.get_followers())
-print(loader.get_unfollowers())
