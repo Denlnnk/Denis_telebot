@@ -5,7 +5,7 @@ import config
 class Instagram:
 
     def __init__(self, target: str):
-        self.loader = instaloader.Instaloader()
+        self.loader = instaloader.Instaloader(user_agent=config.user_agent)
 
         self.username = config.insta_username
         self.password = config.insta_password
@@ -19,7 +19,7 @@ class Instagram:
         try:
             self.loader.load_session_from_file(self.username)
         except FileNotFoundError:
-            self.loader.login(self.username, self.password)
+            self.loader.login(self.username, self.password, proxies=config.proxies)
 
     def get_followers(self):
         return [i.username for i in self.profile.get_followers()]
