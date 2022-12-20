@@ -6,7 +6,7 @@ import requests
 import telebot
 import config
 from telebot import types
-from instagram import Instagram
+from insta_info import Instagram
 
 bot = telebot.TeleBot(config.token)
 
