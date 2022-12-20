@@ -1,3 +1,4 @@
+import json
 import random
 import time
 import instaloader
@@ -25,7 +26,8 @@ def commands_processing(message):
     elif message.text == '/help':
         help_message = '<b>Here you can</b>: ' \
                        '\n1) Get motivation ' \
-                       '\n2) See who didn\'t follow you back at Instagram'
+                       '\n2) See who didn\'t follow you back at Instagram' \
+                       '\n3) Convert money for current price'
         bot.send_message(message.chat.id, help_message, parse_mode='html')
 
 
@@ -43,8 +45,11 @@ def buttons_processing(message):
         bot.register_next_step_handler(msg, get_unfollowers)
 
     elif message.text == config.convert_money_button:
-        msg = bot.send_message(message.chat.id, '<b>Please enter values, following this example</b>:'
-                                                '\n USD to UAH', parse_mode='html')
+        msg = bot.send_message(
+            message.chat.id,
+            '<b>Please enter values, following this example</b>: USD to UAH',
+            parse_mode='html'
+        )
         bot.register_next_step_handler(msg, convert_money)
 
     else:
@@ -67,8 +72,26 @@ def get_unfollowers(message):
 
 
 def convert_money(message):
-    first = message.text.split('to')[0].strip().upper()
-    second = message.text.split('to')[1].strip().upper()
+    try:
+        first = message.text.split('to')[0].strip().upper()
+        second = message.text.split('to')[1].strip().upper()
+    except IndexError:
+        return bot.send_message(message.chat.id, 'Please follow example and try again')
+
+    with open('static/allowed_values/allowed_values.json', 'r') as file:
+        allowed_values = json.load(file)
+
+    try:
+        if first not in allowed_values.keys() or second not in allowed_values.keys():
+            raise ValueError('Please make sure you enter right values')
+    except ValueError as ex:
+        bot.send_message(message.chat.id, f'{ex}')
+        return bot.send_message(
+            message.chat.id,
+            f'<b>Available valutes</b>: {", ".join(tuple(allowed_values.keys()))}',
+            parse_mode='html'
+        )
+
     msg = bot.send_message(message.chat.id, f'How many {first} do u have?')
     bot.register_next_step_handler(msg, convert_request, value={'first': first, 'second': second})
 
@@ -78,10 +101,16 @@ def convert_request(message, **kwargs):
     headers = {
         'apikey': config.API_LAYER_TOKEN
     }
-    response = requests.get(f'https://api.apilayer.com/fixer/latest?base={first}&symbols={second}', headers=headers)
+    try:
+        response = requests.get(f'https://api.apilayer.com/fixer/latest?base={first}&symbols={second}', headers=headers)
+        if response.status_code != 200:
+            raise ConnectionError('Sorry some problem with connection')
+    except ConnectionError as ex:
+        return bot.send_message(message.chat.id, f'{ex}')
+
     data = response.json()
-    converted_money = float(message.text) * data['rates'][second]
-    bot.send_message(message.chat.id, f'Here is: {converted_money} {first}')
+    converted_money = round(float(message.text) * data['rates'][second], 2)
+    bot.send_message(message.chat.id, f'<b>Here is</b>: {converted_money} {second}', parse_mode='html')
 
 
 if __name__ == '__main__':
