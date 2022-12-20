@@ -12,4 +12,4 @@ Search in Telegram from @Forsomeneeds_bot
  + Usage :  
       + Get your id, username and language_code.
       + Convert any currencies by current course
-      + See who didn't follow you back ( by username )
+      + See who didn't follow you back in Instagram ( by username )
