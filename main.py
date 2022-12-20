@@ -43,7 +43,8 @@ def buttons_processing(message):
         bot.register_next_step_handler(msg, get_unfollowers)
 
     elif message.text == config.convert_money_button:
-        msg = bot.send_message(message.chat.id, 'Enter from what to what do u want to convert:')
+        msg = bot.send_message(message.chat.id, '<b>Please enter values, following this example</b>:'
+                                                '\n USD to UAH', parse_mode='html')
         bot.register_next_step_handler(msg, convert_money)
 
     else:
@@ -66,13 +67,21 @@ def get_unfollowers(message):
 
 
 def convert_money(message):
-    first, second = message.text.split(',')
+    first = message.text.split('to')[0].strip().upper()
+    second = message.text.split('to')[1].strip().upper()
     msg = bot.send_message(message.chat.id, f'How many {first} do u have?')
     bot.register_next_step_handler(msg, convert_request, value={'first': first, 'second': second})
 
 
-def convert_request(message):
-    pass
+def convert_request(message, **kwargs):
+    first, second = kwargs['value']['first'], kwargs['value']['second']
+    headers = {
+        'apikey': config.API_LAYER_TOKEN
+    }
+    response = requests.get(f'https://api.apilayer.com/fixer/latest?base={first}&symbols={second}', headers=headers)
+    data = response.json()
+    converted_money = float(message.text) * data['rates'][second]
+    bot.send_message(message.chat.id, f'Here is: {converted_money} {first}')
 
 
 if __name__ == '__main__':
