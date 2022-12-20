@@ -21,7 +21,15 @@ def commands_processing(message):
         convert_currencies_button = types.KeyboardButton(config.convert_currencies_button)
 
         markup.add(motivation_button, convert_currencies_button, dont_follow_back_button)
-        bot.send_message(message.chat.id, f'Hello, {message.from_user.first_name}', reply_markup=markup)
+        bot.send_message(
+            message.chat.id,
+            f'Hello, {message.from_user.first_name} {message.from_user.last_name}'
+            f'\n<b>Your id</b>: {message.from_user.id}'
+            f'\n<b>Your username</b>: {message.from_user.username}'
+            f'\n<b>Your language_code</b>: "{message.from_user.language_code}"',
+            reply_markup=markup,
+            parse_mode='html'
+        )
 
     elif message.text == '/help':
 
@@ -81,7 +89,7 @@ def convert_money(message):
     except IndexError:
         return bot.send_message(message.chat.id, 'Please follow example and try again')
 
-    with open('static/allowed_values/allowed_values.json', 'r') as file:
+    with open('static/allowed_values/allowed_currencies.json', 'r') as file:
         allowed_values = json.load(file)
 
     try:
