@@ -99,7 +99,7 @@ def convert_money(message):
         bot.send_message(message.chat.id, f'{ex}')
         return bot.send_message(
             message.chat.id,
-            f'<b>Available currencies</b>: {", ".join(tuple(allowed_values.keys()))}',
+            f'<b>Available currencies</b>: {", ".join(allowed_values.keys())}',
             parse_mode='html'
         )
 
