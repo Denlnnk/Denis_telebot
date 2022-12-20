@@ -18,16 +18,17 @@ def commands_processing(message):
 
         motivation_button = types.KeyboardButton(config.motivation_button)
         dont_follow_back_button = types.KeyboardButton(config.unfollowers_button)
-        convert_money_button = types.KeyboardButton(config.convert_money_button)
+        convert_currencies_button = types.KeyboardButton(config.convert_currencies_button)
 
-        markup.add(motivation_button, dont_follow_back_button, convert_money_button)
+        markup.add(motivation_button, convert_currencies_button, dont_follow_back_button)
         bot.send_message(message.chat.id, f'Hello, {message.from_user.first_name}', reply_markup=markup)
 
     elif message.text == '/help':
+
         help_message = '<b>Here you can</b>: ' \
                        '\n1) Get motivation ' \
                        '\n2) See who didn\'t follow you back at Instagram' \
-                       '\n3) Convert money for current price'
+                       '\n3) Convert currencies'
         bot.send_message(message.chat.id, help_message, parse_mode='html')
 
 
@@ -44,10 +45,10 @@ def buttons_processing(message):
         msg = bot.send_message(message.chat.id, 'Write Instagram Username: ')
         bot.register_next_step_handler(msg, get_unfollowers)
 
-    elif message.text == config.convert_money_button:
+    elif message.text == config.convert_currencies_button:
         msg = bot.send_message(
             message.chat.id,
-            '<b>Please enter values, following this example</b>: USD to UAH',
+            '<b>Please enter currencies, following this example</b>: USD to UAH',
             parse_mode='html'
         )
         bot.register_next_step_handler(msg, convert_money)
@@ -67,6 +68,8 @@ def get_unfollowers(message):
 
     except instaloader.exceptions.ProfileNotExistsException as ex:
         bot.send_message(message.chat.id, f'{ex}')
+    except instaloader.exceptions.QueryReturnedBadRequestException:
+        bot.send_message(message.chat.id, 'Oops... Some trouble here')
     except ValueError as ex:
         bot.send_message(message.chat.id, f'{ex}')
 
@@ -83,21 +86,27 @@ def convert_money(message):
 
     try:
         if first not in allowed_values.keys() or second not in allowed_values.keys():
-            raise ValueError('Please make sure you enter right values')
+            raise ValueError('Please make sure you enter right currencies')
     except ValueError as ex:
         bot.send_message(message.chat.id, f'{ex}')
         return bot.send_message(
             message.chat.id,
-            f'<b>Available valutes</b>: {", ".join(tuple(allowed_values.keys()))}',
+            f'<b>Available currencies</b>: {", ".join(tuple(allowed_values.keys()))}',
             parse_mode='html'
         )
 
-    msg = bot.send_message(message.chat.id, f'How many {first} do u have?')
+    msg = bot.send_message(message.chat.id, f'How many {first} do you have?')
     bot.register_next_step_handler(msg, convert_request, value={'first': first, 'second': second})
 
 
 def convert_request(message, **kwargs):
     first, second = kwargs['value']['first'], kwargs['value']['second']
+
+    if not message.text.isdigit():
+        bot.send_message(message.chat.id, f'Please enter amount by numbers')
+        msg = bot.send_message(message.chat.id, f'How many {first} do you have?')
+        return bot.register_next_step_handler(msg, convert_request, value={'first': first, 'second': second})
+
     headers = {
         'apikey': config.API_LAYER_TOKEN
     }
@@ -109,8 +118,13 @@ def convert_request(message, **kwargs):
         return bot.send_message(message.chat.id, f'{ex}')
 
     data = response.json()
-    converted_money = round(float(message.text) * data['rates'][second], 2)
-    bot.send_message(message.chat.id, f'<b>Here is</b>: {converted_money} {second}', parse_mode='html')
+    value_course = round(data['rates'][second], 2)
+    converted_money = round(float(message.text) * value_course, 2)
+    bot.send_message(
+        message.chat.id,
+        f'<b>Course {first} is</b>: {value_course}'
+        f'\n<b>Here is {message.text} {first}</b>: {converted_money} {second}',
+        parse_mode='html')
 
 
 if __name__ == '__main__':

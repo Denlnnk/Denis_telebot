@@ -1,6 +1,5 @@
 import instaloader
 import config
-import logging
 
 
 class Instagram:
@@ -20,7 +19,6 @@ class Instagram:
         try:
             self.loader.load_session_from_file(self.username)
         except FileNotFoundError:
-            logging.error('Log in with username and passwrd')
             self.loader.login(self.username, self.password)
 
     def get_followers(self):
