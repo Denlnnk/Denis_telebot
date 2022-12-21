@@ -1,16 +1,11 @@
-import telebot
 import config
 from telebot import types
-from unfollowers_test import Unfollowers_test
-from convert_currencies_test import ConvertCurrenciesTest
-from button_motivation import Motivation_test
+from bot import Bot
+from button_processors.button_unfollowers import ButtonUnfollowers
+from button_processors.button_convert_currencies import ButtonConvertCurrencies
+from button_processors.button_motivation import ButtonMotivation
 
-bot = telebot.TeleBot(config.TOKEN)
-buttons = {
-    config.MOTIVATION_BUTTON: Motivation_test(),
-    config.UNFOLLOWERS_BUTTON: Unfollowers_test(),
-    config.CONVERT_CURRENCIES_BUTTON: ConvertCurrenciesTest(),
-}
+bot = Bot().get_instance_of_bot()
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -39,14 +34,20 @@ def commands_processing(message):
                        '\n1) Get motivation ' \
                        '\n2) See who didn\'t follow you back at Instagram' \
                        '\n3) Convert currencies'
+
         bot.send_message(message.chat.id, help_message, parse_mode='html')
 
 
 @bot.message_handler(content_types=['text'])
 def buttons_processing(message):
-    button = message.text
-    command = buttons[button]
-    command.process_message(message)
+    buttons = {
+        config.MOTIVATION_BUTTON: ButtonMotivation(),
+        config.UNFOLLOWERS_BUTTON: ButtonUnfollowers(),
+        config.CONVERT_CURRENCIES_BUTTON: ButtonConvertCurrencies(),
+    }
+    button_name = message.text
+    button_process = buttons[button_name]
+    button_process.process_message(message)
 
 
 if __name__ == '__main__':
