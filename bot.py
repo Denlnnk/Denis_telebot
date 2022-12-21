@@ -1,5 +1,5 @@
+import os
 import telebot
-import config
 
 
 class SingletonMeta(type):
@@ -19,5 +19,5 @@ class Bot(metaclass=SingletonMeta):
 
     def get_instance_of_bot(self):
         if not self.bot:
-            self.bot = telebot.TeleBot(config.TOKEN)
+            self.bot = telebot.TeleBot(os.getenv('TOKEN'))
         return self.bot

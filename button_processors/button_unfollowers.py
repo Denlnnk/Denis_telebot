@@ -1,7 +1,7 @@
 import instaloader
 import time
 from insta_info import Instagram
-from button_process import ButtonProcess
+from button_processors.button_process import ButtonProcess
 
 
 class ButtonUnfollowers(ButtonProcess):

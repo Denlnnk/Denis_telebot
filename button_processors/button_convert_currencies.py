@@ -1,7 +1,8 @@
 import json
+import os
 import requests
 import config
-from button_process import ButtonProcess
+from button_processors.button_process import ButtonProcess
 
 
 class ButtonConvertCurrencies(ButtonProcess):
@@ -9,7 +10,7 @@ class ButtonConvertCurrencies(ButtonProcess):
     def __init__(self):
         super().__init__()
         self.headers = {
-            'apikey': config.API_LAYER_TOKEN,
+            'apikey': os.environ['API_LAYER_TOKEN'],
             'user-agent': config.USER_AGENT
         }
 

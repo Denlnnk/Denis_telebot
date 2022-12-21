@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 import config
 
@@ -7,7 +8,7 @@ class ApiLayer:
 
     def __init__(self):
         self.headers = {
-            'apikey': config.API_LAYER_TOKEN,
+            'apikey': os.getenv('API_LAYER_TOKEN'),
             'user-agent': config.USER_AGENT
         }
 

@@ -1,10 +1,12 @@
 import config
+from dotenv import load_dotenv
 from telebot import types
 from bot import Bot
 from button_processors.button_unfollowers import ButtonUnfollowers
 from button_processors.button_convert_currencies import ButtonConvertCurrencies
 from button_processors.button_motivation import ButtonMotivation
 
+load_dotenv()
 bot = Bot().get_instance_of_bot()
 
 
