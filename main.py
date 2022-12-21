@@ -3,7 +3,7 @@ import config
 from telebot import types
 from unfollowers_test import Unfollowers_test
 from convert_currencies_test import ConvertCurrenciesTest
-from motivation_test import Motivation_test
+from button_motivation import Motivation_test
 
 bot = telebot.TeleBot(config.TOKEN)
 buttons = {
