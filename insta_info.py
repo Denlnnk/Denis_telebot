@@ -5,10 +5,10 @@ import config
 class Instagram:
 
     def __init__(self, target: str):
-        self.loader = instaloader.Instaloader(user_agent=config.user_agent)
+        self.loader = instaloader.Instaloader(user_agent=config.USER_AGENT)
 
-        self.username = config.insta_username
-        self.password = config.insta_password
+        self.username = config.INSTA_USERNAME
+        self.password = config.INSTA_PASSWORD
         self.login()
 
         self.target = target
