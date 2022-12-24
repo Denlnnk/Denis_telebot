@@ -16,7 +16,7 @@ class ButtonConvertCurrencies(ButtonProcess):
 
     def process_message(self, message):
         msg = self.bot.send_message(
-            message.chat.id,
+            message['chat']['id'],
             '<b>Please enter currencies, following this example</b>: USD to UAH',
             parse_mode='html'
         )
@@ -25,10 +25,10 @@ class ButtonConvertCurrencies(ButtonProcess):
     def convert_money(self, message):
 
         try:
-            first = message.text.split('to')[0].strip().upper()
-            second = message.text.split('to')[1].strip().upper()
+            first = message['text'].split('to')[0].strip().upper()
+            second = message['text'].split('to')[1].strip().upper()
         except IndexError:
-            return self.bot.send_message(message.chat.id, 'Please follow example and try again')
+            return self.bot.send_message(message['chat']['id'], 'Please follow example and try again')
 
         with open('static/allowed_currencies/allowed_currencies.json', 'r') as file:
             allowed_values = json.load(file)
@@ -50,9 +50,9 @@ class ButtonConvertCurrencies(ButtonProcess):
     def convert_request(self, message, **kwargs):
         first, second = kwargs['value']['first'], kwargs['value']['second']
 
-        if not message.text.isdigit():
-            self.bot.send_message(message.chat.id, f'Please enter amount by numbers')
-            msg = self.bot.send_message(message.chat.id, f'How many {first} do you have?')
+        if not message['text'].isdigit():
+            self.bot.send_message(message['chat']['id'], f'Please enter amount by numbers')
+            msg = self.bot.send_message(message['chat']['id'], f'How many {first} do you have?')
             return self.bot.register_next_step_handler(
                 msg, self.convert_request,
                 value={'first': first, 'second': second}
@@ -64,11 +64,11 @@ class ButtonConvertCurrencies(ButtonProcess):
             if response.status_code != 200:
                 raise ConnectionError('Sorry some problem with connection')
         except ConnectionError as ex:
-            return self.bot.send_message(message.chat.id, f'{ex}')
+            return self.bot.send_message(message['chat']['id'], f'{ex}')
 
         data = response.json()
         value_course = round(data['rates'][second], 2)
-        converted_money = round(float(message.text) * value_course, 2)
+        converted_money = round(float(message['text']) * value_course, 2)
         self.bot.send_message(
             message.chat.id,
             f'<b>Course {first} is</b>: {value_course}'

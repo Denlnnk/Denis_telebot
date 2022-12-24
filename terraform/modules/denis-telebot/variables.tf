@@ -1,6 +1,6 @@
 variable "lambda_handler_name" {
   type = string
-  default = "lambda_function.py"
+  default = "lambda_function.lambda_handler"
 }
 
 variable "lambda_zip_file_name" {
