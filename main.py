@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from button_processors.button_unfollowers import ButtonUnfollowers
 from button_processors.button_convert_currencies import ButtonConvertCurrencies
 from button_processors.button_motivation import ButtonMotivation
+from button_processors.button_audio_test import AudioTest
 
 bot = Bot().get_instance_of_bot()
 load_dotenv()
@@ -18,8 +19,9 @@ def commands_processing(message):
         motivation_button = types.KeyboardButton(config.MOTIVATION_BUTTON)
         dont_follow_back_button = types.KeyboardButton(config.UNFOLLOWERS_BUTTON)
         convert_currencies_button = types.KeyboardButton(config.CONVERT_CURRENCIES_BUTTON)
+        audio_test = types.KeyboardButton(config.AUDIO_test)
 
-        markup.add(motivation_button, convert_currencies_button, dont_follow_back_button)
+        markup.add(motivation_button, convert_currencies_button, dont_follow_back_button, audio_test)
         bot.send_message(
             message.chat.id,
             f'Hello, {message.from_user.first_name} {message.from_user.last_name}'
@@ -45,11 +47,20 @@ def buttons_processing(message):
     buttons = {
         config.MOTIVATION_BUTTON: ButtonMotivation(),
         config.UNFOLLOWERS_BUTTON: ButtonUnfollowers(),
-        config.CONVERT_CURRENCIES_BUTTON: ButtonConvertCurrencies(),
+        config.CONVERT_CURRENCIES_BUTTON: ButtonConvertCurrencies()
     }
-    button_name = message.text
-    button_process = buttons[button_name]
-    button_process.process_message(message)
+    if message.text not in buttons:
+        bot.send_message(message.chat.id, 'Sorry, now i work only with buttons')
+    else:
+        button_name = message.text
+        button_process = buttons[button_name]
+        button_process.process_message(message)
+
+
+@bot.message_handler(content_types=['voice'])
+def voice_processing(message):
+    audio_process = AudioTest()
+    audio_process.process_message(message)
 
 
 if __name__ == '__main__':
