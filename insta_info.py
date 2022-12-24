@@ -20,7 +20,7 @@ class Instagram:
 
     def login(self):
         try:
-            self.loader.load_session_from_file('danciel22')
+            self.loader.load_session_from_file(self.username)
         except FileNotFoundError:
             self.loader.login(self.username, self.password)
 
