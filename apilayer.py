@@ -28,4 +28,3 @@ class ApiLayer:
 if __name__ == '__main__':
     api = ApiLayer()
     data = api.get_allowed_currencies()
-    api.save_to_file(data)

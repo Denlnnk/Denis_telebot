@@ -6,3 +6,4 @@ def test_get_allowed_currencies():
     data = apilayer.get_allowed_currencies()
 
     assert type(data) == dict
+    assert len(data) == 170
