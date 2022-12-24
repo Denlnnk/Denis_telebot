@@ -1,11 +1,13 @@
 import config
 from telebot import types
 from bot import Bot
+from dotenv import load_dotenv
 from button_processors.button_unfollowers import ButtonUnfollowers
 from button_processors.button_convert_currencies import ButtonConvertCurrencies
 from button_processors.button_motivation import ButtonMotivation
 
 bot = Bot().get_instance_of_bot()
+load_dotenv()
 
 
 @bot.message_handler(commands=['start', 'help'])
