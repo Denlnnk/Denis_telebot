@@ -6,6 +6,10 @@ from command_processors.command_start import StartCommand
 from command_processors.command_help import HelpCommand
 from command_processors.command_buttons import ButtonsCommand
 
+from point_processors.point_admin import AdminPoint
+from point_processors.point_back import BackPoint
+from point_processors.point_user import UserPoint
+
 from button_processors.button_unfollowers import ButtonUnfollowers
 from button_processors.button_convert_currencies import ButtonConvertCurrencies
 from button_processors.button_motivation import ButtonMotivation
@@ -33,34 +37,21 @@ def commands_processing(message):
     func=lambda call: call.data in config.LIST_OF_USER_BUTTONS or call.data in config.LIST_OF_ADMIN_BUTTONS
 )
 def buttons_call_back(call):
-    if call.message:
-        if call.data in config.LIST_OF_USER_BUTTONS:
-            buttons_processing(call.message, button_name=call.data)
-        elif call.data in config.LIST_OF_ADMIN_BUTTONS:
-            admin_processing(call.message, button_name=call.data)
+    if call.data in config.LIST_OF_USER_BUTTONS:
+        buttons_processing(call.message, button_name=call.data)
+    elif call.data in config.LIST_OF_ADMIN_BUTTONS:
+        admin_processing(call.message, button_name=call.data)
 
 
 @bot.callback_query_handler(func=lambda call: call.data in config.LIST_OF_POINTS)
 def points_call_back(call):
-    if call.message:
-        if call.data == config.ADMIN_POINT:
-            bot.edit_message_reply_markup(
-                chat_id=call.message.chat.id,
-                message_id=call.message.id,
-                reply_markup=ButtonsCommand().admin_second_points()
-            )
-        elif call.data == config.BACK_POINT:
-            bot.edit_message_reply_markup(
-                chat_id=call.message.chat.id,
-                message_id=call.message.id,
-                reply_markup=ButtonsCommand().admin_first_points()
-            )
-        elif call.data == config.USER_POINT:
-            bot.edit_message_reply_markup(
-                chat_id=call.message.chat.id,
-                message_id=call.message.id,
-                reply_markup=ButtonsCommand().user_buttons(call.message)
-            )
+    points = {
+        config.ADMIN_POINT: AdminPoint(),
+        config.USER_POINT: UserPoint(),
+        config.BACK_POINT: BackPoint()
+    }
+    point_process = points[call.data]
+    point_process.process_call(call)
 
 
 @bot.message_handler(func=lambda message: message.from_user.id in config.ADMIN_IDS)
