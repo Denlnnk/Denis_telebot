@@ -2,10 +2,10 @@ import instaloader
 import time
 from fpdf import FPDF
 from insta_info import Instagram
-from button_processors.button_process import ButtonProcess
+from abstcract_process.abstract_process import AbstractProcess
 
 
-class ButtonUnfollowers(ButtonProcess):
+class ButtonUnfollowers(AbstractProcess):
 
     def __init__(self):
         super().__init__()

@@ -1,9 +1,9 @@
 import subprocess
 import speech_recognition as sr
-from button_processors.button_process import ButtonProcess
+from abstcract_process.abstract_process import AbstractProcess
 
 
-class AudioTest(ButtonProcess):
+class AudioTest(AbstractProcess):
 
     def __init__(self):
         super().__init__()

@@ -2,10 +2,10 @@ import json
 import os
 import requests
 import config
-from button_processors.button_process import ButtonProcess
+from abstcract_process.abstract_process import AbstractProcess
 
 
-class ButtonConvertCurrencies(ButtonProcess):
+class ButtonConvertCurrencies(AbstractProcess):
 
     def __init__(self):
         super().__init__()
