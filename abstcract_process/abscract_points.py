@@ -8,5 +8,5 @@ class AbstractPoints(ABC):
         self.bot = Bot().get_instance_of_bot()
 
     @abstractmethod
-    def process_call(self, message):
+    def process_call(self, callback):
         pass
