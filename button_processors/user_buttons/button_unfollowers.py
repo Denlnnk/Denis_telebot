@@ -21,11 +21,11 @@ class ButtonUnfollowers(AbstractProcess):
         try:
             unfollowers_amount, unfollowers = Instagram(message['text']).get_unfollowers()
 
-            target = message.text
+            target = message["text"]
             file_path = f'./static/unfollowers_folder/{target}_unfollowers.pdf'
 
-            self.save_to_pdf(unfollowers, message.text)
-            self.bot.send_message(message.chat.id, f'<b>Amount</b>: {unfollowers_amount}', parse_mode='html')
+            self.save_to_pdf(unfollowers, message["text"])
+            self.bot.send_message(message["chat"]["id"], f'<b>Amount</b>: {unfollowers_amount}', parse_mode='html')
             self.bot.send_document(message['chat']['id'], open(file_path, 'rb'))
 
         except instaloader.exceptions.ProfileNotExistsException as ex:

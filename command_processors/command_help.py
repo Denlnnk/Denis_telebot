@@ -14,5 +14,5 @@ class HelpCommand(AbstractProcess):
                        '\n2) See who didn\'t follow you back at Instagram' \
                        '\n3) Convert currencies'
 
-        self.bot.send_message(message.chat.id, art)
-        self.bot.send_message(message.chat.id, help_message, parse_mode='html')
+        self.bot.send_message(message["chat"]["id"], art)
+        self.bot.send_message(message["chat"]["id"], help_message, parse_mode='html')

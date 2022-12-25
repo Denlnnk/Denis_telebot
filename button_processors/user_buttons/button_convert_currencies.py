@@ -37,14 +37,14 @@ class ButtonConvertCurrencies(AbstractProcess):
             if first not in allowed_values.keys() or second not in allowed_values.keys():
                 raise ValueError('Please make sure you enter right currencies')
         except ValueError as ex:
-            self.bot.send_message(message.chat.id, f'{ex}')
+            self.bot.send_message(message["chat"]["id"], f'{ex}')
             return self.bot.send_message(
-                message.chat.id,
+                message["chat"]["id"],
                 f'<b>Available currencies</b>: {", ".join(allowed_values.keys())}',
                 parse_mode='html'
             )
 
-        msg = self.bot.send_message(message.chat.id, f'How many {first} do you have?')
+        msg = self.bot.send_message(message["chat"]["id"], f'How many {first} do you have?')
         self.bot.register_next_step_handler(msg, self.convert_request, value={'first': first, 'second': second})
 
     def convert_request(self, message, **kwargs):

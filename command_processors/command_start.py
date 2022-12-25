@@ -9,11 +9,11 @@ class StartCommand(AbstractProcess):
 
     def process_message(self, message):
         self.bot.send_message(
-            message.chat.id,
-            f'Hello, {message.from_user.first_name} {message.from_user.last_name}'
-            f'\n<b>Your id</b>: {message.from_user.id}'
-            f'\n<b>Your username</b>: {message.from_user.username}'
-            f'\n<b>Your language_code</b>: "{message.from_user.language_code}"',
+            message["chat"]["id"],
+            f'Hello, {message["from"]["first_name"]} {message["from"]["last_name"]}'
+            f'\n<b>Your id</b>: {message["from"]["id"]}'
+            f'\n<b>Your username</b>: {message["from"]["username"]}'
+            f'\n<b>Your language_code</b>: "{message["from"]["language_code"]}"',
             parse_mode='html'
         )
         buttons = ButtonsCommand()

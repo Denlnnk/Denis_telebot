@@ -28,7 +28,7 @@ def commands_processing(message):
         config.HELP_COMMAND: HelpCommand(),
         config.BUTTONS_COMMAND: ButtonsCommand()
     }
-    command_name = message.text
+    command_name = message['text']
     command_process = commands[command_name]
     command_process.process_message(message)
 
@@ -50,11 +50,13 @@ def points_call_back(call):
         config.USER_POINT: UserPoint(),
         config.BACK_POINT: BackPoint()
     }
-    point_process = points[call.data]
+
+    print(f'Received call {call}')
+    point_process = points[call['data']]
     point_process.process_call(call)
 
 
-@bot.message_handler(func=lambda message: message.from_user.id in config.ADMIN_IDS)
+@bot.message_handler(func=lambda message: message["from"]["id"] in config.ADMIN_IDS)
 def admin_processing(message, button_name: str = None):
     buttons = {
         config.ADMIN_ADD_MOTIVATION_BUTTON: AddMotivation(),
@@ -65,7 +67,7 @@ def admin_processing(message, button_name: str = None):
 
 @bot.message_handler(content_types=['text'])
 def text_processing(message):
-    bot.send_message(message.chat.id, 'Sorry, now i work only with buttons')
+    bot.send_message(message['chat']['id'], 'Sorry, now i work only with buttons')
 
 
 @bot.message_handler(content_types=['voice'])
