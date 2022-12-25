@@ -1,8 +1,8 @@
 import random
-from button_processors.button_process import ButtonProcess
+from abstcract_process.abstract_process import AbstractProcess
 
 
-class ButtonMotivation(ButtonProcess):
+class ButtonMotivation(AbstractProcess):
 
     def __init__(self):
         super().__init__()

@@ -1,5 +1,7 @@
 import os
 import instaloader
+import pandas as pd
+
 import config
 
 
@@ -22,12 +24,6 @@ class Instagram:
         except FileNotFoundError:
             self.loader.login(self.username, self.password)
 
-    def get_followers(self):
-        return [i.username for i in self.profile.get_followers()]
-
-    def get_following(self):
-        return [i.username for i in self.profile.get_followees()]
-
     def get_unfollowers(self) -> tuple[int, set]:
         current_followers = self.get_followers()
         current_following = self.get_following()
@@ -38,3 +34,13 @@ class Instagram:
         difference_length = len(difference)
 
         return difference_length, difference
+
+    def get_followers(self) -> list:
+        return [followers.username for followers in self.profile.get_followers()]
+
+    def get_following(self) -> list:
+        return [following.username for following in self.profile.get_followees()]
+
+    def save_to_scv(self, data: list):
+        df = pd.DataFrame(data)
+        df.to_csv(f'./static/{self.target}/{self.target}.scv', index=False)

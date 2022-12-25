@@ -15,12 +15,19 @@ class ApiLayer:
     def get_allowed_currencies(self):
         response = requests.get('https://api.apilayer.com/fixer/symbols', headers=self.headers)
         data = response.json()
-        allowed_values = data['symbols']
 
-        with open('static/allowed_currencies/allowed_currencies.json', 'w') as file:
-            json.dump(allowed_values, file, ensure_ascii=False, indent=4)
+        return data['symbols']
+
+    @staticmethod
+    def save_to_file(data):
+        with open(
+                '/home/denis/PycharmProjects/Denis_telebot/static/allowed_currencies/allowed_currencies.json',
+                'w'
+        ) as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
 
 
 if __name__ == '__main__':
     api = ApiLayer()
-    api.get_allowed_currencies()
+    allowed_currencies = api.get_allowed_currencies()
+    api.save_to_file(allowed_currencies)

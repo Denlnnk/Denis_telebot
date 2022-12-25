@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 from bot import Bot
 
 
-class ButtonProcess(ABC):
+class AbstractPoints(ABC):
 
     def __init__(self):
         self.bot = Bot().get_instance_of_bot()
 
     @abstractmethod
-    def process_message(self, message):
+    def process_call(self, callback):
         pass
