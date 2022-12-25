@@ -30,7 +30,8 @@ def commands_processing(message):
 
 
 @bot.callback_query_handler(
-    func=lambda call: call.data in config.LIST_OF_USER_BUTTONS or call.data in config.LIST_OF_ADMIN_BUTTONS)
+    func=lambda call: call.data in config.LIST_OF_USER_BUTTONS or call.data in config.LIST_OF_ADMIN_BUTTONS
+)
 def buttons_call_back(call):
     if call.message:
         if call.data in config.LIST_OF_USER_BUTTONS:
