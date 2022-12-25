@@ -2,10 +2,13 @@ import config
 from telebot import types
 from bot import Bot
 from dotenv import load_dotenv
+
 from button_processors.button_unfollowers import ButtonUnfollowers
 from button_processors.button_convert_currencies import ButtonConvertCurrencies
 from button_processors.button_motivation import ButtonMotivation
 from button_processors.button_audio_test import AudioTest
+
+from admin_processors.button_add_motivation import AddMotivation
 
 bot = Bot().get_instance_of_bot()
 load_dotenv()
@@ -19,9 +22,13 @@ def commands_processing(message):
         motivation_button = types.KeyboardButton(config.MOTIVATION_BUTTON)
         dont_follow_back_button = types.KeyboardButton(config.UNFOLLOWERS_BUTTON)
         convert_currencies_button = types.KeyboardButton(config.CONVERT_CURRENCIES_BUTTON)
-        audio_test = types.KeyboardButton(config.AUDIO_test)
 
-        markup.add(motivation_button, convert_currencies_button, dont_follow_back_button, audio_test)
+        if message.from_user.id == config.ADMIN_IDS:
+            admin_add_motivation = types.KeyboardButton(config.ADMIN_ADD_MOTIVATION_BUTTON)
+            markup.add(motivation_button, convert_currencies_button, dont_follow_back_button, admin_add_motivation)
+        else:
+            markup.add(motivation_button, convert_currencies_button, dont_follow_back_button)
+
         bot.send_message(
             message.chat.id,
             f'Hello, {message.from_user.first_name} {message.from_user.last_name}'
@@ -40,6 +47,19 @@ def commands_processing(message):
                        '\n3) Convert currencies'
 
         bot.send_message(message.chat.id, help_message, parse_mode='html')
+
+
+@bot.message_handler(func=lambda message: message.from_user.id in config.ADMIN_IDS, content_types=['text'])
+def admin_processing(message):
+    buttons = {
+        config.ADMIN_ADD_MOTIVATION_BUTTON: AddMotivation(),
+        config.MOTIVATION_BUTTON: ButtonMotivation(),
+        config.UNFOLLOWERS_BUTTON: ButtonUnfollowers(),
+        config.CONVERT_CURRENCIES_BUTTON: ButtonConvertCurrencies()
+    }
+    button_name = message.text
+    button_process = buttons[button_name]
+    button_process.process_message(message)
 
 
 @bot.message_handler(content_types=['text'])
