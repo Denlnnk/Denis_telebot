@@ -36,10 +36,10 @@ class Instagram:
         return difference_length, difference
 
     def get_followers(self) -> list:
-        return [i.username for i in self.profile.get_followers()]
+        return [followers.username for followers in self.profile.get_followers()]
 
     def get_following(self) -> list:
-        return [i.username for i in self.profile.get_followees()]
+        return [following.username for following in self.profile.get_followees()]
 
     def save_to_scv(self, data: list):
         df = pd.DataFrame(data)
