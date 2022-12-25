@@ -62,44 +62,34 @@ def points_call_back(call):
             )
 
 
-@bot.message_handler(func=lambda message: message.from_user.id in config.ADMIN_IDS, content_types=['text'])
+@bot.message_handler(func=lambda message: message.from_user.id in config.ADMIN_IDS)
 def admin_processing(message, button_name: str = None):
     buttons = {
         config.ADMIN_ADD_MOTIVATION_BUTTON: AddMotivation(),
     }
-    if button_name:
-        button_process = buttons[button_name]
-        button_process.process_message(message)
-    elif message.text not in buttons:
-        bot.send_message(message.chat.id, 'Sorry, now i work only with buttons')
-    else:
-        button_name = message.text
-        button_process = buttons[button_name]
-        button_process.process_message(message)
+    button_process = buttons[button_name]
+    button_process.process_message(message)
 
 
 @bot.message_handler(content_types=['text'])
-def buttons_processing(message, button_name: str = None):
-    buttons = {
-        config.MOTIVATION_BUTTON: ButtonMotivation(),
-        config.UNFOLLOWERS_BUTTON: ButtonUnfollowers(),
-        config.CONVERT_CURRENCIES_BUTTON: ButtonConvertCurrencies()
-    }
-    if button_name:
-        button_process = buttons[button_name]
-        button_process.process_message(message)
-    elif message.text not in buttons:
-        bot.send_message(message.chat.id, 'Sorry, now i work only with buttons')
-    else:
-        button_name = message.text
-        button_process = buttons[button_name]
-        button_process.process_message(message)
+def text_processing(message):
+    bot.send_message(message.chat.id, 'Sorry, now i work only with buttons')
 
 
 @bot.message_handler(content_types=['voice'])
 def voice_processing(message):
     audio_process = AudioTest()
     audio_process.process_message(message)
+
+
+def buttons_processing(message, button_name: str = None):
+    buttons = {
+        config.MOTIVATION_BUTTON: ButtonMotivation(),
+        config.UNFOLLOWERS_BUTTON: ButtonUnfollowers(),
+        config.CONVERT_CURRENCIES_BUTTON: ButtonConvertCurrencies()
+    }
+    button_process = buttons[button_name]
+    button_process.process_message(message)
 
 
 if __name__ == '__main__':
