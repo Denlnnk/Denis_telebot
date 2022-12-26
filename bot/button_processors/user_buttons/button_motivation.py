@@ -1,5 +1,5 @@
 import random
-from abstcract_process.abstract_process import AbstractProcess
+from bot.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonMotivation(AbstractProcess):

@@ -2,20 +2,20 @@ import config
 from bot import Bot
 from dotenv import load_dotenv
 
-from command_processors.command_start import StartCommand
-from command_processors.command_help import HelpCommand
-from command_processors.command_buttons import ButtonsCommand
+from bot.command_processors.command_start import StartCommand
+from bot.command_processors.command_help import HelpCommand
+from bot.command_processors.command_buttons import ButtonsCommand
 
-from point_processors.point_admin import AdminPoint
-from point_processors.point_back import BackPoint
-from point_processors.point_user import UserPoint
+from bot.point_processors.point_admin import AdminPoint
+from bot.point_processors.point_back import BackPoint
+from bot.point_processors.point_user import UserPoint
 
-from button_processors.user_buttons.button_unfollowers import ButtonUnfollowers
-from button_processors.user_buttons.button_convert_currencies import ButtonConvertCurrencies
-from button_processors.user_buttons.button_motivation import ButtonMotivation
-from button_processors.user_buttons.button_audio_test import AudioTest
+from bot.button_processors.user_buttons.button_unfollowers import ButtonUnfollowers
+from bot.button_processors.user_buttons.button_convert_currencies import ButtonConvertCurrencies
+from bot.button_processors.user_buttons.button_motivation import ButtonMotivation
+from bot.button_processors.user_buttons.button_audio_test import AudioTest
 
-from button_processors.admin_buttons.admin_add_motivation import AddMotivation
+from bot.button_processors.admin_buttons.admin_add_motivation import AddMotivation
 
 bot = Bot().get_instance_of_bot()
 load_dotenv()

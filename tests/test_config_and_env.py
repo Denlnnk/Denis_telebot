@@ -1,5 +1,5 @@
 import os
-import config
+from bot import config
 from dotenv import load_dotenv
 
 load_dotenv()

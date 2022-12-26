@@ -1,5 +1,5 @@
 from art import text2art
-from abstcract_process.abstract_process import AbstractProcess
+from bot.abstcract_process.abstract_process import AbstractProcess
 
 
 class HelpCommand(AbstractProcess):

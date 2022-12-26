@@ -1,8 +1,8 @@
 import json
 import os
 import requests
-import config
-from abstcract_process.abstract_process import AbstractProcess
+from bot import config
+from bot.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonConvertCurrencies(AbstractProcess):

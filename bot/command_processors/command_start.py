@@ -1,5 +1,5 @@
-from abstcract_process.abstract_process import AbstractProcess
-from command_processors.command_buttons import ButtonsCommand
+from bot.abstcract_process.abstract_process import AbstractProcess
+from bot.command_processors.command_buttons import ButtonsCommand
 
 
 class StartCommand(AbstractProcess):

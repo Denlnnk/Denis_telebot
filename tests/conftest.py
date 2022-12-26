@@ -1,6 +1,6 @@
 import pytest
 
-from bot import Bot
+from bot.bot import Bot
 
 
 @pytest.fixture()

@@ -1,4 +1,4 @@
-from apilayer import ApiLayer
+from bot.apilayer import ApiLayer
 
 
 def test_get_allowed_currencies():

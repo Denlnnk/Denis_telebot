@@ -1,6 +1,6 @@
-import config
+from bot import config
 from telebot import types
-from abstcract_process.abstract_process import AbstractProcess
+from bot.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonsCommand(AbstractProcess):

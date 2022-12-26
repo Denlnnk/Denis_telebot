@@ -1,8 +1,8 @@
 import instaloader
 import time
 from fpdf import FPDF
-from insta_info import Instagram
-from abstcract_process.abstract_process import AbstractProcess
+from bot.insta_info import Instagram
+from bot.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonUnfollowers(AbstractProcess):

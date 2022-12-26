@@ -1,8 +1,8 @@
-from abstcract_process.abscract_points import AbstractPoints
-from command_processors.command_buttons import ButtonsCommand
+from bot.abstcract_process.abscract_points import AbstractPoints
+from bot.command_processors.command_buttons import ButtonsCommand
 
 
-class UserPoint(AbstractPoints):
+class BackPoint(AbstractPoints):
 
     def __init__(self):
         super().__init__()
@@ -11,5 +11,5 @@ class UserPoint(AbstractPoints):
         self.bot.edit_message_reply_markup(
             chat_id=callback["message"]["chat"]["id"],
             message_id=callback["message"]["id"],
-            reply_markup=ButtonsCommand().user_buttons(callback.message)
+            reply_markup=ButtonsCommand().admin_first_points()
         )
