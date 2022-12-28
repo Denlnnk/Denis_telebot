@@ -3,7 +3,7 @@ import speech_recognition as sr
 from abstcract_process.abstract_process import AbstractProcess
 
 
-class AudioTest(AbstractProcess):
+class VoiceProcess(AbstractProcess):
 
     def __init__(self):
         super().__init__()
@@ -19,7 +19,7 @@ class AudioTest(AbstractProcess):
         src_filename = 'user_voice.ogg'
         dest_filename = 'user_voice_output.wav'
 
-        process = subprocess.run(['/home/denis/Downloads/ffmpeg-5.1.2/Makefile', '-i', src_filename, dest_filename])
+        process = subprocess.run(['ffmpeg', '-i', src_filename, dest_filename])
         if process.returncode != 0:
             raise Exception("Something went wrong")
 
