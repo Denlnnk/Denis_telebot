@@ -62,7 +62,7 @@ def text_processing(message):
 
 @bot.message_handler(content_types=['voice'])
 def voice_processing(message):
-    audio_process = VoiceProcess()
+    audio_process = VoiceProcess(message.from_user.first_name)
     audio_process.process_message(message)
 
 
