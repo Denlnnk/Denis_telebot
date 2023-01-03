@@ -1,8 +1,10 @@
 import json
 import os
 import requests
-import config
-from abstcract_process.abstract_process import AbstractProcess
+from telebot import types
+
+from settings import config
+from processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonConvertCurrencies(AbstractProcess):
@@ -14,7 +16,7 @@ class ButtonConvertCurrencies(AbstractProcess):
             'user-agent': config.USER_AGENT
         }
 
-    def process_message(self, message):
+    def process_message(self, message: types.Message):
         msg = self.bot.send_message(
             message.chat.id,
             '<b>Please enter currencies, following this example</b>: USD to UAH',
@@ -22,7 +24,7 @@ class ButtonConvertCurrencies(AbstractProcess):
         )
         self.bot.register_next_step_handler(msg, self.convert_money)
 
-    def convert_money(self, message):
+    def convert_money(self, message: types.Message):
 
         try:
             first = message.text.split('to')[0].strip().upper()
@@ -47,7 +49,7 @@ class ButtonConvertCurrencies(AbstractProcess):
         msg = self.bot.send_message(message.chat.id, f'How many {first} do you have?')
         self.bot.register_next_step_handler(msg, self.convert_request, value={'first': first, 'second': second})
 
-    def convert_request(self, message, **kwargs):
+    def convert_request(self, message: types.Message, **kwargs):
         first, second = kwargs['value']['first'], kwargs['value']['second']
 
         if not message.text.isdigit():

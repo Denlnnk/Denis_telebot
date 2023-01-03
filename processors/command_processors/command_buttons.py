@@ -1,6 +1,6 @@
-import config
+from settings import config
 from telebot import types
-from abstcract_process.abstract_process import AbstractProcess
+from processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonsCommand(AbstractProcess):
@@ -8,7 +8,7 @@ class ButtonsCommand(AbstractProcess):
     def __init__(self):
         super().__init__()
 
-    def process_message(self, message):
+    def process_message(self, message: types.Message):
         if message.from_user.id in config.ADMIN_IDS:
             self.bot.send_message(
                 chat_id=message.chat.id,
@@ -27,7 +27,7 @@ class ButtonsCommand(AbstractProcess):
             types.InlineKeyboardButton(config.ADMIN_POINT, callback_data=config.ADMIN_POINT),
             types.InlineKeyboardButton(config.USER_POINT, callback_data=config.USER_POINT)
         ]
-        reply_markup = types.InlineKeyboardMarkup(self.build_menu(buttons_list, n_cols=2))
+        reply_markup = types.InlineKeyboardMarkup(self._build_menu(buttons_list, n_cols=2))
 
         return reply_markup
 
@@ -37,11 +37,11 @@ class ButtonsCommand(AbstractProcess):
                                        callback_data=config.ADMIN_ADD_MOTIVATION_BUTTON),
             types.InlineKeyboardButton('<-- ' + config.BACK_POINT, callback_data=config.BACK_POINT)
         ]
-        reply_markup = types.InlineKeyboardMarkup(self.build_menu(buttons_list, n_cols=1))
+        reply_markup = types.InlineKeyboardMarkup(self._build_menu(buttons_list, n_cols=1))
 
         return reply_markup
 
-    def user_buttons(self, message):
+    def user_buttons(self, message: types.Message):
         buttons_list = []
         for buttons in config.LIST_OF_USER_BUTTONS:
             buttons_list.append(types.InlineKeyboardButton(buttons, callback_data=buttons))
@@ -49,12 +49,12 @@ class ButtonsCommand(AbstractProcess):
         if message.from_user.id in config.ADMIN_IDS:
             buttons_list.append(types.InlineKeyboardButton('<-- ' + config.BACK_POINT, callback_data=config.BACK_POINT))
 
-        reply_markup = types.InlineKeyboardMarkup(self.build_menu(buttons_list, n_cols=2))
+        reply_markup = types.InlineKeyboardMarkup(self._build_menu(buttons_list, n_cols=2))
 
         return reply_markup
 
     @staticmethod
-    def build_menu(buttons, n_cols, header_buttons=None, footer_buttons=None):
+    def _build_menu(buttons, n_cols, header_buttons=None, footer_buttons=None):
         menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
         if header_buttons:
             menu.insert(0, header_buttons)

@@ -1,7 +1,9 @@
 import os
 import subprocess
 import speech_recognition as sr
-from abstcract_process.abstract_process import AbstractProcess
+from telebot import types
+
+from processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class VoiceProcess(AbstractProcess):
@@ -12,7 +14,7 @@ class VoiceProcess(AbstractProcess):
         self.user_voice_folder = f'static/user_voices/{self.first_name}.ogg'
         self.user_voice_output = f'static/user_voices/{self.first_name}_output.wav'
 
-    def process_message(self, message):
+    def process_message(self, message: types.Message):
         r = sr.Recognizer()
 
         file_info = self.bot.get_file(message.voice.file_id)

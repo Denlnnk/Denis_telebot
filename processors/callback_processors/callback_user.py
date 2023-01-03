@@ -1,5 +1,5 @@
-from abstcract_process.abscract_points import AbstractPoints
-from command_processors.command_buttons import ButtonsCommand
+from processors.abstcract_process.abscract_points import AbstractPoints
+from processors.command_processors.command_buttons import ButtonsCommand
 
 
 class UserPoint(AbstractPoints):

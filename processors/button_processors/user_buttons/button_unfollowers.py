@@ -1,8 +1,10 @@
 import instaloader
 import time
 from fpdf import FPDF
-from insta_info import Instagram
-from abstcract_process.abstract_process import AbstractProcess
+from telebot import types
+
+from api.api_insta import Instagram
+from processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonUnfollowers(AbstractProcess):
@@ -10,13 +12,13 @@ class ButtonUnfollowers(AbstractProcess):
     def __init__(self):
         super().__init__()
 
-    def process_message(self, message):
+    def process_message(self, message: types.Message):
         self.bot.send_message(message.chat.id, '<b>[ INFO ]</b>\nMake sure account privacy is OFF', parse_mode='html')
         time.sleep(1)
         msg = self.bot.send_message(message.chat.id, 'Write Instagram Username: ')
         self.bot.register_next_step_handler(msg, self.get_unfollowers)
 
-    def get_unfollowers(self, message):
+    def get_unfollowers(self, message: types.Message):
         self.bot.send_message(message.chat.id, 'Working...')
         try:
             unfollowers_amount, unfollowers = Instagram(message.text).get_unfollowers()
@@ -24,7 +26,7 @@ class ButtonUnfollowers(AbstractProcess):
             target = message.text
             file_path = f'./static/unfollowers_folder/{target}_unfollowers.pdf'
 
-            self.save_to_pdf(unfollowers, message.text)
+            self._save_to_pdf(unfollowers, message.text)
             self.bot.send_message(message.chat.id, f'<b>Amount</b>: {unfollowers_amount}', parse_mode='html')
             self.bot.send_document(message.chat.id, open(file_path, 'rb'))
 
@@ -36,7 +38,7 @@ class ButtonUnfollowers(AbstractProcess):
             self.bot.send_message(message.chat.id, f'{ex}')
 
     @staticmethod
-    def save_to_pdf(difference: set, target: str):
+    def _save_to_pdf(difference: set, target: str) -> None:
         pdf = FPDF(format='letter')
         pdf.add_page()
         pdf.set_font("Arial", size=12)

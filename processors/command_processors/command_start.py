@@ -1,5 +1,7 @@
-from abstcract_process.abstract_process import AbstractProcess
-from command_processors.command_buttons import ButtonsCommand
+from telebot import types
+
+from processors.abstcract_process.abstract_process import AbstractProcess
+from processors.command_processors.command_buttons import ButtonsCommand
 
 
 class StartCommand(AbstractProcess):
@@ -7,7 +9,7 @@ class StartCommand(AbstractProcess):
     def __init__(self):
         super().__init__()
 
-    def process_message(self, message):
+    def process_message(self, message: types.Message):
         self.bot.send_message(
             message.chat.id,
             f'Hello, {message.from_user.first_name} {message.from_user.last_name}'

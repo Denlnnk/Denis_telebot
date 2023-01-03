@@ -1,7 +1,3 @@
-import pytest
-from bot import Bot
-
-
 def test_is_same_instances(bot):
     bot1 = bot
     bot2 = bot

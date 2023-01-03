@@ -1,5 +1,7 @@
 from art import text2art
-from abstcract_process.abstract_process import AbstractProcess
+from telebot import types
+
+from processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class HelpCommand(AbstractProcess):
@@ -7,7 +9,7 @@ class HelpCommand(AbstractProcess):
     def __init__(self):
         super().__init__()
 
-    def process_message(self, message):
+    def process_message(self, message: types.Message):
         art = text2art("Bot")
         help_message = '\n<b>Here you can</b>: ' \
                        '\n1) Get motivation ' \

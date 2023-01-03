@@ -1,7 +1,7 @@
 import json
 import os
 import requests
-import config
+from settings import config
 
 
 class ApiLayer:
@@ -21,7 +21,7 @@ class ApiLayer:
     @staticmethod
     def save_to_file(data):
         with open(
-                '/home/denis/PycharmProjects/Denis_telebot/static/allowed_currencies/allowed_currencies.json',
+                '/static/allowed_currencies/allowed_currencies.json',
                 'w'
         ) as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
