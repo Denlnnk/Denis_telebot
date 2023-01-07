@@ -13,7 +13,7 @@ from bot.processors.callback_processors.callback_user import UserPoint
 from bot.processors.button_processors.user_buttons.button_unfollowers import ButtonUnfollowers
 from bot.processors.button_processors.user_buttons.button_convert_currencies import ButtonConvertCurrencies
 from bot.processors.button_processors.user_buttons.button_motivation import ButtonMotivation
-from bot.processors.voice_processors.voice_process import AudioTest
+from bot.processors.voice_processors.voice_process import VoiceProcess
 
 from bot.processors.button_processors.admin_buttons.admin_add_motivation import AddMotivation
 

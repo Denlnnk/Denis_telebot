@@ -3,7 +3,7 @@ import speech_recognition as sr
 from bot.processors.abstcract_process.abstract_process import AbstractProcess
 
 
-class AudioTest(AbstractProcess):
+class VoiceProcess(AbstractProcess):
 
     def __init__(self):
         super().__init__()
