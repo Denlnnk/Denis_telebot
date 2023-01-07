@@ -1,6 +1,6 @@
 import subprocess
 import speech_recognition as sr
-from bot.abstcract_process.abstract_process import AbstractProcess
+from bot.processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class AudioTest(AbstractProcess):
