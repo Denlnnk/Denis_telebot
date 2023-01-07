@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 from bot.settings.bot import Bot
-from telebot import types
-from bot.settings.bot import Bot
 
 
 class AbstractProcess(ABC):
@@ -10,5 +8,5 @@ class AbstractProcess(ABC):
         self.bot = Bot().get_instance_of_bot()
 
     @abstractmethod
-    def process_message(self, message: types.Message):
+    def process_message(self, message):
         pass

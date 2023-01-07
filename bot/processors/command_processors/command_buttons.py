@@ -41,7 +41,7 @@ class ButtonsCommand(AbstractProcess):
 
         return reply_markup
 
-    def user_buttons(self, message: types.Message):
+    def user_buttons(self, message):
         buttons_list = []
         for buttons in config.LIST_OF_USER_BUTTONS:
             buttons_list.append(types.InlineKeyboardButton(buttons, callback_data=buttons))

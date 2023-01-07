@@ -8,7 +8,7 @@ class HelpCommand(AbstractProcess):
     def __init__(self):
         super().__init__()
 
-    def process_message(self, message: types.Message):
+    def process_message(self, message):
         art = text2art("Bot")
         help_message = '\n<b>Here you can</b>: ' \
                        '\n1) Get motivation ' \

@@ -1,3 +1,4 @@
+from bot.processors.voice_processors.voice_process import VoiceProcess
 from bot.settings import config
 from bot.settings.bot import Bot
 from dotenv import load_dotenv
@@ -14,7 +15,6 @@ from bot.processors.callback_processors.callback_user import UserPoint
 from bot.processors.button_processors.user_buttons.button_unfollowers import ButtonUnfollowers
 from bot.processors.button_processors.user_buttons.button_convert_currencies import ButtonConvertCurrencies
 from bot.processors.button_processors.user_buttons.button_motivation import ButtonMotivation
-from bot.processors.voice_processors.voice_process import VoiceProcess
 
 from bot.processors.button_processors.admin_buttons.admin_add_motivation import AddMotivation
 
@@ -23,7 +23,7 @@ load_dotenv()
 
 
 @bot.message_handler(commands=['start', 'help', 'buttons'])
-def commands_processing(message: types.Message) -> None:
+def commands_processing(message) -> None:
     commands = {
         config.START_COMMAND: StartCommand(),
         config.HELP_COMMAND: HelpCommand(),
@@ -45,7 +45,7 @@ def buttons_call_back(call: types.CallbackQuery) -> None:
 
 
 @bot.callback_query_handler(func=lambda call: call.data in config.LIST_OF_POINTS)
-def points_call_back(call: types.CallbackQuery) -> None:
+def points_call_back(call) -> None:
     points = {
         config.ADMIN_POINT: AdminPoint(),
         config.USER_POINT: UserPoint(),
@@ -73,7 +73,7 @@ def text_processing(message):
 
 @bot.message_handler(content_types=['voice'])
 def voice_processing(message):
-    audio_process = AudioTest()
+    audio_process = VoiceProcess()
     audio_process.process_message(message)
 
 
