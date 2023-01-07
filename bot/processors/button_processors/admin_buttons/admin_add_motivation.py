@@ -1,4 +1,4 @@
-from processors.abstcract_process.abstract_process import AbstractProcess
+from bot.processors.abstcract_process.abstract_process import AbstractProcess
 from telebot import types
 
 

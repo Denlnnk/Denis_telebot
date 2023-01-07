@@ -1,24 +1,22 @@
+from dotenv import load_dotenv
 from telebot import types
 
-from settings import config
-from settings.bot import Bot
-from dotenv import load_dotenv
+from bot.processors.command_processors.command_start import StartCommand
+from bot.processors.command_processors.command_help import HelpCommand
+from bot.processors.command_processors.command_buttons import ButtonsCommand
 
-from processors.voice_processors.voice_process import VoiceProcess
+from bot.processors.callback_processors.callback_admin import AdminPoint
+from bot.processors.callback_processors.callback_back import BackPoint
+from bot.processors.callback_processors.callback_user import UserPoint
 
-from processors.command_processors.command_start import StartCommand
-from processors.command_processors.command_help import HelpCommand
-from processors.command_processors.command_buttons import ButtonsCommand
+from bot.processors.button_processors.user_buttons.button_unfollowers import ButtonUnfollowers
+from bot.processors.button_processors.user_buttons.button_convert_currencies import ButtonConvertCurrencies
+from bot.processors.button_processors.user_buttons.button_motivation import ButtonMotivation
+from bot.processors.voice_processors.voice_process import VoiceProcess
 
-from processors.callback_processors.callback_admin import AdminPoint
-from processors.callback_processors.callback_back import BackPoint
-from processors.callback_processors.callback_user import UserPoint
-
-from processors.button_processors.user_buttons.button_unfollowers import ButtonUnfollowers
-from processors.button_processors.user_buttons.button_convert_currencies import ButtonConvertCurrencies
-from processors.button_processors.user_buttons.button_motivation import ButtonMotivation
-
-from processors.button_processors.admin_buttons.admin_add_motivation import AddMotivation
+from bot.processors.button_processors.admin_buttons.admin_add_motivation import AddMotivation
+from bot.settings import config
+from bot.settings.bot import Bot
 
 bot = Bot().get_instance_of_bot()
 load_dotenv()

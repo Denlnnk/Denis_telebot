@@ -3,8 +3,8 @@ import time
 from fpdf import FPDF
 from telebot import types
 
-from api.api_insta import Instagram
-from processors.abstcract_process.abstract_process import AbstractProcess
+from bot.api_insta import Instagram
+from bot.processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonUnfollowers(AbstractProcess):

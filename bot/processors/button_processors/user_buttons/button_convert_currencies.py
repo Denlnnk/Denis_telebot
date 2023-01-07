@@ -3,8 +3,8 @@ import os
 import requests
 from telebot import types
 
-from settings import config
-from processors.abstcract_process.abstract_process import AbstractProcess
+from bot.settings import config
+from bot.processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class ButtonConvertCurrencies(AbstractProcess):

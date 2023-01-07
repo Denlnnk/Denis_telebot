@@ -3,7 +3,7 @@ import subprocess
 import speech_recognition as sr
 from telebot import types
 
-from processors.abstcract_process.abstract_process import AbstractProcess
+from bot.processors.abstcract_process.abstract_process import AbstractProcess
 
 
 class VoiceProcess(AbstractProcess):

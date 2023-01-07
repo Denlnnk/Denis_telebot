@@ -1,13 +1,14 @@
 from abc import ABC, abstractmethod
 from telebot import types
-from settings.bot import Bot
+
+from bot.settings.bot import Bot
 
 
-class AbstractProcess(ABC):
+class AbstractPoints(ABC):
 
     def __init__(self):
         self.bot = Bot().get_instance_of_bot()
 
     @abstractmethod
-    def process_message(self, message: types.Message):
+    def process_call(self, callback: types.CallbackQuery):
         pass
