@@ -1,5 +1,4 @@
 from art import text2art
-from telebot import types
 from bot.processors.abstcract_process.abstract_process import AbstractProcess
 
 

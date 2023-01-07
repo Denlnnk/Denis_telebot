@@ -28,4 +28,4 @@ class VoiceProcess(AbstractProcess):
             user_audio = r.record(source)
         text = r.recognize_google(user_audio, language='en-US')
 
-        self.bot.send_message(message.chat.id, text)
+        self.bot.send_message(message['chat']['id'], text)
