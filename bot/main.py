@@ -1,6 +1,7 @@
 from bot.settings import config
 from bot.settings.bot import Bot
 from dotenv import load_dotenv
+from telebot import types
 
 from bot.processors.command_processors.command_start import StartCommand
 from bot.processors.command_processors.command_help import HelpCommand
@@ -22,7 +23,7 @@ load_dotenv()
 
 
 @bot.message_handler(commands=['start', 'help', 'buttons'])
-def commands_processing(message):
+def commands_processing(message: types.Message) -> None:
     commands = {
         config.START_COMMAND: StartCommand(),
         config.HELP_COMMAND: HelpCommand(),
@@ -36,7 +37,7 @@ def commands_processing(message):
 @bot.callback_query_handler(
     func=lambda call: call.data in config.LIST_OF_USER_BUTTONS or call.data in config.LIST_OF_ADMIN_BUTTONS
 )
-def buttons_call_back(call):
+def buttons_call_back(call: types.CallbackQuery) -> None:
     if call.data in config.LIST_OF_USER_BUTTONS:
         buttons_processing(call.message, button_name=call.data)
     elif call.data in config.LIST_OF_ADMIN_BUTTONS:
@@ -44,7 +45,7 @@ def buttons_call_back(call):
 
 
 @bot.callback_query_handler(func=lambda call: call.data in config.LIST_OF_POINTS)
-def points_call_back(call):
+def points_call_back(call: types.CallbackQuery) -> None:
     points = {
         config.ADMIN_POINT: AdminPoint(),
         config.USER_POINT: UserPoint(),
