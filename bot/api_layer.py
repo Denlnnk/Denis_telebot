@@ -1,7 +1,7 @@
 import json
 import os
 import requests
-from settings import config
+from bot.settings import config
 
 
 class ApiLayer:

@@ -2,7 +2,7 @@ import os
 import instaloader
 import pandas as pd
 
-from settings import config
+from bot.settings import config
 
 
 class Instagram:

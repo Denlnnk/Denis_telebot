@@ -1,3 +1,6 @@
+from bot.processors.voice_processors.voice_process import VoiceProcess
+from bot.settings import config
+from bot.settings.bot import Bot
 from dotenv import load_dotenv
 from telebot import types
 
@@ -12,24 +15,21 @@ from bot.processors.callback_processors.callback_user import UserPoint
 from bot.processors.button_processors.user_buttons.button_unfollowers import ButtonUnfollowers
 from bot.processors.button_processors.user_buttons.button_convert_currencies import ButtonConvertCurrencies
 from bot.processors.button_processors.user_buttons.button_motivation import ButtonMotivation
-from bot.processors.voice_processors.voice_process import VoiceProcess
 
 from bot.processors.button_processors.admin_buttons.admin_add_motivation import AddMotivation
-from bot.settings import config
-from bot.settings.bot import Bot
 
 bot = Bot().get_instance_of_bot()
 load_dotenv()
 
 
 @bot.message_handler(commands=['start', 'help', 'buttons'])
-def commands_processing(message: types.Message) -> None:
+def commands_processing(message) -> None:
     commands = {
         config.START_COMMAND: StartCommand(),
         config.HELP_COMMAND: HelpCommand(),
         config.BUTTONS_COMMAND: ButtonsCommand()
     }
-    command_name = message.text
+    command_name = message['text']
     command_process = commands[command_name]
     command_process.process_message(message)
 
@@ -45,28 +45,20 @@ def buttons_call_back(call: types.CallbackQuery) -> None:
 
 
 @bot.callback_query_handler(func=lambda call: call.data in config.LIST_OF_POINTS)
-def points_call_back(call: types.CallbackQuery) -> None:
+def points_call_back(call) -> None:
     points = {
         config.ADMIN_POINT: AdminPoint(),
         config.USER_POINT: UserPoint(),
         config.BACK_POINT: BackPoint()
     }
-    point_process = points[call.data]
+
+    print(f'Received call {call}')
+    point_process = points[call['data']]
     point_process.process_call(call)
 
 
-@bot.callback_query_handler(func=lambda message: message.text)
-def text_processing(message: types.Message) -> None:
-    bot.send_message(message.chat.id, 'Sorry, now i work only with buttons')
-
-
-@bot.message_handler(content_types=['voice'])
-def voice_processing(message: types.Message) -> None:
-    audio_process = VoiceProcess(message.from_user.first_name)
-    audio_process.process_message(message)
-
-
-def admin_processing(message: types.Message, button_name: str = None) -> None:
+@bot.message_handler(func=lambda message: message["from"]["id"] in config.ADMIN_IDS)
+def admin_processing(message, button_name: str = None):
     buttons = {
         config.ADMIN_ADD_MOTIVATION_BUTTON: AddMotivation(),
     }
@@ -74,7 +66,18 @@ def admin_processing(message: types.Message, button_name: str = None) -> None:
     button_process.process_message(message)
 
 
-def buttons_processing(message: types.Message, button_name: str = None) -> None:
+@bot.message_handler(content_types=['text'])
+def text_processing(message):
+    bot.send_message(message['chat']['id'], 'Sorry, now i work only with buttons')
+
+
+@bot.message_handler(content_types=['voice'])
+def voice_processing(message):
+    audio_process = VoiceProcess()
+    audio_process.process_message(message)
+
+
+def buttons_processing(message, button_name: str = None):
     buttons = {
         config.MOTIVATION_BUTTON: ButtonMotivation(),
         config.UNFOLLOWERS_BUTTON: ButtonUnfollowers(),
