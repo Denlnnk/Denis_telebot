@@ -1,7 +1,11 @@
 import json
 import os
 import requests
+from dotenv import load_dotenv
+
 from bot.settings import config
+
+load_dotenv()
 
 
 class ApiLayer:
@@ -21,7 +25,7 @@ class ApiLayer:
     @staticmethod
     def save_to_file(data):
         with open(
-                '/static/allowed_currencies/allowed_currencies.json',
+                './static/allowed_currencies/allowed_currencies.json',
                 'w'
         ) as file:
             json.dump(data, file, ensure_ascii=False, indent=4)

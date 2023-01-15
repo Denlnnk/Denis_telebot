@@ -18,8 +18,8 @@ from bot.processors.button_processors.user_buttons.button_motivation import Butt
 
 from bot.processors.button_processors.admin_buttons.admin_add_motivation import AddMotivation
 
-bot = Bot().get_instance_of_bot()
 load_dotenv()
+bot = Bot().get_instance_of_bot()
 
 
 @bot.message_handler(commands=['start', 'help', 'buttons'])
@@ -29,7 +29,7 @@ def commands_processing(message) -> None:
         config.HELP_COMMAND: HelpCommand(),
         config.BUTTONS_COMMAND: ButtonsCommand()
     }
-    command_name = message['text']
+    command_name = message.text
     command_process = commands[command_name]
     command_process.process_message(message)
 
@@ -53,11 +53,11 @@ def points_call_back(call) -> None:
     }
 
     print(f'Received call {call}')
-    point_process = points[call['data']]
+    point_process = points[call.data]
     point_process.process_call(call)
 
 
-@bot.message_handler(func=lambda message: message["from"]["id"] in config.ADMIN_IDS)
+@bot.message_handler(func=lambda message: message.from_user.id in config.ADMIN_IDS)
 def admin_processing(message, button_name: str = None):
     buttons = {
         config.ADMIN_ADD_MOTIVATION_BUTTON: AddMotivation(),
@@ -68,7 +68,7 @@ def admin_processing(message, button_name: str = None):
 
 @bot.message_handler(content_types=['text'])
 def text_processing(message):
-    bot.send_message(message['chat']['id'], 'Sorry, now i work only with buttons')
+    bot.send_message(message.chat.id, 'Sorry, now i work only with buttons')
 
 
 @bot.message_handler(content_types=['voice'])

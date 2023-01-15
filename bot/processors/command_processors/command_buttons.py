@@ -9,15 +9,15 @@ class ButtonsCommand(AbstractProcess):
         super().__init__()
 
     def process_message(self, message):
-        if message["from"]["id"] in config.ADMIN_IDS:
+        if message.from_user.id in config.ADMIN_IDS:
             self.bot.send_message(
-                chat_id=message["chat"]["id"],
+                chat_id=message.chat.id,
                 text='Choose from the following:',
                 reply_markup=self.admin_first_points()
             )
         else:
             self.bot.send_message(
-                chat_id=message["chat"]["id"],
+                chat_id=message.chat.id,
                 text='Choose from the following:',
                 reply_markup=self.user_buttons(message)
             )
@@ -46,7 +46,7 @@ class ButtonsCommand(AbstractProcess):
         for buttons in config.LIST_OF_USER_BUTTONS:
             buttons_list.append(types.InlineKeyboardButton(buttons, callback_data=buttons))
 
-        if message["from"]["id"] in config.ADMIN_IDS:
+        if message.from_user.id in config.ADMIN_IDS:
             buttons_list.append(types.InlineKeyboardButton('<-- ' + config.BACK_POINT, callback_data=config.BACK_POINT))
 
         reply_markup = types.InlineKeyboardMarkup(self._build_menu(buttons_list, n_cols=2))
