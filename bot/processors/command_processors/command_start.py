@@ -10,10 +10,10 @@ class StartCommand(AbstractProcess):
     def process_message(self, message):
         self.bot.send_message(
             message.chat.id,
-            f'Hello, {message.from_user.first_name} {message.from_user.last_name}'
-            f'\n<b>Your id</b>: {message.from_user.id}'
-            f'\n<b>Your username</b>: {message.from_user.username}'
-            f'\n<b>Your language_code</b>: "{message.from_user.language_code}"',
+            f'Hello, {message.from_user.first_name} {message.from_user.last_name}\n'
+            f'My name is SIGMA | BOT 🤖.\n'
+            f'I\'m going to help you with your motivation and give you some helpful advantages\n'
+            f'If you are ready. Let\'s start!',
             parse_mode='html'
         )
         buttons = ButtonsCommand()

@@ -1,6 +1,6 @@
 import subprocess
 import speech_recognition as sr
-from bot.processors.abstcract_process.abstract_process import AbstractProcess
+from ..abstcract_process.abstract_process import AbstractProcess
 
 
 class VoiceProcess(AbstractProcess):

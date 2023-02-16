@@ -1,10 +1,16 @@
+import os
+
+import dotenv
+
+dotenv.load_dotenv()
+
 MOTIVATION_BUTTON = 'Give motivation'
 UNFOLLOWERS_BUTTON = 'Who didn\'t follow back'
 CONVERT_CURRENCIES_BUTTON = 'Convert money'
 LIST_OF_USER_BUTTONS = [MOTIVATION_BUTTON, CONVERT_CURRENCIES_BUTTON, UNFOLLOWERS_BUTTON]
 
 
-ADMIN_IDS = [5599768818, 2048624017]
+ADMIN_IDS = [int(admin_id.strip()) for admin_id in os.getenv("ADMIN_IDS").split(',')]
 ADMIN_FIRST_STEP = 'admin'
 ADMIN_ADD_MOTIVATION_BUTTON = 'Add motivation'
 LIST_OF_ADMIN_BUTTONS = [ADMIN_FIRST_STEP, ADMIN_ADD_MOTIVATION_BUTTON]

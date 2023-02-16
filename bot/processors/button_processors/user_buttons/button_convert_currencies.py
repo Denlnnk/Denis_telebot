@@ -4,6 +4,10 @@ import requests
 
 from bot.settings import config
 from bot.processors.abstcract_process.abstract_process import AbstractProcess
+from loguru import logger
+from database.database import UserQueryDatabase
+
+user_query_database = UserQueryDatabase()
 
 
 class ButtonConvertCurrencies(AbstractProcess):
@@ -24,7 +28,6 @@ class ButtonConvertCurrencies(AbstractProcess):
         self.bot.register_next_step_handler(msg, self.convert_money)
 
     def convert_money(self, message):
-
         try:
             first = message.text.split('to')[0].strip().upper()
             second = message.text.split('to')[1].strip().upper()
@@ -60,16 +63,24 @@ class ButtonConvertCurrencies(AbstractProcess):
             )
 
         try:
+            # TODO Разобраться почему может не работать запрос на перевод денег
+            logger.info(f'User {message.from_user.id}({message.from_user.first_name}) asked to convert currencies')
             response = requests.get(f'https://api.apilayer.com/fixer/latest?base={first}&symbols={second}',
                                     headers=self.headers)
             if response.status_code != 200:
+                print(response.text)
                 raise ConnectionError('Sorry some problem with connection')
         except ConnectionError as ex:
+            logger.error(ex)
             return self.bot.send_message(message.chat.id, f'{ex}')
 
         data = response.json()
         value_course = round(data['rates'][second], 2)
         converted_money = round(float(message.text) * value_course, 2)
+        user_query_database.save_user_query(
+            user_id=message.from_user.id,
+            user_query=f'User asked to convert {message.text} {first}'
+        )
         self.bot.send_message(
             message.chat.id,
             f'<b>Course {first} is</b>: {value_course}'
